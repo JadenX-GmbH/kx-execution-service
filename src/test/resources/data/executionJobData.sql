@@ -1,0 +1,18 @@
+INSERT INTO execution_job (id,
+                           price_token,
+                           `description`,
+                           execution_type,
+                           workerpool,
+                           worker,
+                           gig_id,
+                           date_created,
+                           last_updated)
+VALUES (1000,
+        19.42,
+        'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.',
+        'TEE',
+        'Ut pellentesque sapien...',
+        'Ut pellentesque sapien...',
+        1400,
+        '2021-09-03 04:30:00',
+        '2021-09-03 04:30:00');

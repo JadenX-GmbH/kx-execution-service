@@ -1,0 +1,18 @@
+INSERT INTO dataset (id,
+                     title,
+                     `description`,
+                     hash,
+                     type,
+                     location,
+                     storage_type,
+                     date_created,
+                     last_updated)
+VALUES (1500,
+        'Donec ac nibh...',
+        'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.',
+        'Ut pellentesque sapien...',
+        'RAW',
+        'Aenean pulvinar...',
+        'Cras sed interdum...',
+        '2021-09-03 04:30:00',
+        '2021-09-03 04:30:00');
