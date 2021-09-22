@@ -1,6 +1,7 @@
 package com.jadenx.kxexecutionservice.service;
 
 import com.jadenx.kxexecutionservice.model.ProgramDTO;
+import com.jadenx.kxexecutionservice.model.ProgramPatchDTO;
 
 import java.util.List;
 
@@ -17,4 +18,5 @@ public interface ProgramService {
 
     void delete(final Long id);
 
+    void patchUpdate(final Long id, final ProgramPatchDTO programPatchDTO);
 }

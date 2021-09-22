@@ -1,9 +1,9 @@
 package com.jadenx.kxexecutionservice.rest;
 
-import com.jadenx.kxexecutionservice.model.ExecutionJobDTO;
-import com.jadenx.kxexecutionservice.model.ExplorationJobDTO;
-import com.jadenx.kxexecutionservice.model.GigDTO;
+import com.jadenx.kxexecutionservice.model.*;
+import com.jadenx.kxexecutionservice.service.DatasetService;
 import com.jadenx.kxexecutionservice.service.GigService;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.*;
 import javax.validation.Valid;
 import java.security.Principal;
 import java.util.List;
+import java.util.UUID;
 
 
 @RestController
@@ -19,14 +20,22 @@ import java.util.List;
 public class GigController {
 
     private final GigService gigService;
+    private final DatasetService datasetService;
 
-    public GigController(final GigService gigService) {
+    public GigController(final GigService gigService, final DatasetService datasetService) {
         this.gigService = gigService;
+        this.datasetService = datasetService;
     }
 
     @GetMapping
     public ResponseEntity<List<GigDTO>> getAllGigs(final Principal user) {
         return ResponseEntity.ok(gigService.findAll(user.getName()));
+    }
+
+    @GetMapping("/{id}/datasets")
+    public ResponseEntity<PaginatedResponse<?>> getDatasetsByGig(@PathVariable final Long id,
+                                                                 final Principal user, final Pageable pageable) {
+        return ResponseEntity.ok(datasetService.findAllByGig(id, UUID.fromString(user.getName()), pageable));
     }
 
     @GetMapping("/{id}")
@@ -65,4 +74,10 @@ public class GigController {
         return ResponseEntity.noContent().build();
     }
 
+    @PutMapping("/{id}/gigId")
+    public ResponseEntity<Void> updateByGigId(@PathVariable final Long id,
+                                              @RequestBody @Valid final GigDTO gigDTO) {
+        gigService.update(id, gigDTO);
+        return ResponseEntity.ok().build();
+    }
 }

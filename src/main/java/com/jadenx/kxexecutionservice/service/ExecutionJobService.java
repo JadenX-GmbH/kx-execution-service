@@ -1,6 +1,8 @@
 package com.jadenx.kxexecutionservice.service;
 
 import com.jadenx.kxexecutionservice.model.ExecutionJobDTO;
+import com.jadenx.kxexecutionservice.model.ExecutionJobPatchDTO;
+import com.jadenx.kxexecutionservice.model.ProgramDTO;
 
 import java.util.List;
 
@@ -17,4 +19,7 @@ public interface ExecutionJobService {
 
     void delete(final Long id);
 
+    List<ProgramDTO> getProgramsByExecutionJob(final Long id);
+
+    void patchUpdate(final Long id, final ExecutionJobPatchDTO executionJobPatchDTO);
 }

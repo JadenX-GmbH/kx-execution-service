@@ -19,7 +19,8 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 public class ExplorationResultControllerTest extends BaseIT {
 
     @Test
-    @Sql({"/data/gigData.sql", "/data/explorationJobData.sql", "/data/explorationResultData.sql"})
+    @Sql({"/data/datasetData.sql", "/data/gigData.sql",
+        "/data/explorationJobData.sql", "/data/explorationResultData.sql"})
     public void getAllExplorationResults_success() {
         final HttpEntity<String> request = new HttpEntity<>(null, headers());
         final ResponseEntity<List<ExplorationResultDTO>> response = restTemplate.exchange(
@@ -27,15 +28,16 @@ public class ExplorationResultControllerTest extends BaseIT {
             });
 
         assertEquals(HttpStatus.OK, response.getStatusCode());
-        assertEquals(1300L, response.getBody().get(0).getId());
+        assertEquals(1100L, response.getBody().get(0).getId());
     }
 
     @Test
-    @Sql({"/data/gigData.sql", "/data/explorationJobData.sql", "/data/explorationResultData.sql"})
+    @Sql({"/data/datasetData.sql", "/data/gigData.sql",
+        "/data/explorationJobData.sql", "/data/explorationResultData.sql"})
     public void getExplorationResult_success() {
         final HttpEntity<String> request = new HttpEntity<>(null, headers());
         final ResponseEntity<ExplorationResultDTO> response = restTemplate.exchange(
-            "/api/explorationResults/1300", HttpMethod.GET, request, ExplorationResultDTO.class);
+            "/api/explorationResults/1100", HttpMethod.GET, request, ExplorationResultDTO.class);
 
         assertEquals(HttpStatus.OK, response.getStatusCode());
         assertEquals("Aenean pulvinar...", response.getBody().getLocation());
@@ -52,7 +54,7 @@ public class ExplorationResultControllerTest extends BaseIT {
     }
 
     @Test
-    @Sql({"/data/gigData.sql", "/data/explorationJobData.sql"})
+    @Sql({"/data/datasetData.sql", "/data/gigData.sql", "/data/explorationJobData.sql"})
     public void createExplorationResult_success() {
         final HttpEntity<String> request = new HttpEntity<>(
             readResource("/requests/explorationResultDTORequest.json"), headers());
@@ -76,24 +78,26 @@ public class ExplorationResultControllerTest extends BaseIT {
     }
 
     @Test
-    @Sql({"/data/gigData.sql", "/data/explorationJobData.sql", "/data/explorationResultData.sql"})
+    @Sql({"/data/datasetData.sql", "/data/gigData.sql",
+        "/data/explorationJobData.sql", "/data/explorationResultData.sql"})
     public void updateExplorationResult_success() {
         final HttpEntity<String> request = new HttpEntity<>(
             readResource("/requests/explorationResultDTORequest.json"), headers());
         final ResponseEntity<Void> response = restTemplate.exchange(
-            "/api/explorationResults/1300", HttpMethod.PUT, request, Void.class);
+            "/api/explorationResults/1100", HttpMethod.PUT, request, Void.class);
 
         assertEquals(HttpStatus.OK, response.getStatusCode());
         assertEquals("Ut pellentesque sapien...",
-            explorationResultRepository.findById(1300L).get().getLocation());
+            explorationResultRepository.findById(1100L).get().getLocation());
     }
 
     @Test
-    @Sql({"/data/gigData.sql", "/data/explorationJobData.sql", "/data/explorationResultData.sql"})
+    @Sql({"/data/datasetData.sql", "/data/gigData.sql",
+        "/data/explorationJobData.sql", "/data/explorationResultData.sql"})
     public void deleteExplorationResult_success() {
         final HttpEntity<String> request = new HttpEntity<>(null, headers());
         final ResponseEntity<Void> response = restTemplate.exchange(
-            "/api/explorationResults/1300", HttpMethod.DELETE, request, Void.class);
+            "/api/explorationResults/1100", HttpMethod.DELETE, request, Void.class);
 
         assertEquals(HttpStatus.NO_CONTENT, response.getStatusCode());
         assertEquals(0, explorationResultRepository.count());

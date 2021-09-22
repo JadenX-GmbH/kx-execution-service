@@ -14,11 +14,19 @@ public class OrderDTO {
     private Long id;
 
     @NotNull
+    private String name;
+
+    @NotNull
     @Size(max = 255)
     private String transactionId;
 
     @NotNull
     @Size(max = 255)
     private String blockchainIdentifier;
+
+    @NotNull
+    private Long executionJob;
+
+    private String orderDetails;
 
 }

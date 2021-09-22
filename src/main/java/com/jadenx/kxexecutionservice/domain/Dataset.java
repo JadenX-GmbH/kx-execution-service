@@ -3,10 +3,12 @@ package com.jadenx.kxexecutionservice.domain;
 import com.jadenx.kxexecutionservice.model.DataSetType;
 import lombok.Getter;
 import lombok.Setter;
+import org.hibernate.annotations.Type;
 
 import javax.persistence.*;
 import java.time.OffsetDateTime;
 import java.util.Set;
+import java.util.UUID;
 
 
 @Entity
@@ -21,6 +23,11 @@ public class Dataset {
 
     @Column(length = 100)
     private String title;
+
+    @Column(nullable = false, columnDefinition = "char(36)")
+    @Type(type = "uuid-char")
+    private UUID dataOwner;
+
     @Lob
     @Column(name = "\"description\"", columnDefinition = "longtext")
     private String description;
@@ -40,6 +47,9 @@ public class Dataset {
 
     @ManyToMany(mappedBy = "gigDatasetDatasets")
     private Set<Gig> gigDatasetGigs;
+
+    @Column
+    private String  blockchainAddress;
 
     @Column(nullable = false, updatable = false)
     private OffsetDateTime dateCreated;

@@ -1,4 +1,7 @@
 {
+    "name": "order1",
     "transactionId": "Ut pellentesque sapien...",
-    "blockchainIdentifier": "Ut pellentesque sapien..."
+    "blockchainIdentifier": "Ut pellentesque sapien...",
+    "executionJob": 1000,
+    "orderDetails": "fetchedWorkerpoolorder: {\n  sign: '0xe95c2f47ead8c7c90c6c6f1cf4c0f2ffc28a1d6c12665bc7b8da6298ebbdb37f4f75b428b73a522a1a7e0dc6948ef990d04cd0af4fe2e0cdaf94328b297961a61c',\n  salt: '0x1b6564324a9c8f704339b2673656984e62a8947f6bbc03cb640f08b749fc9f0a',\n  requesterrestrict: '0x0000000000000000000000000000000000000000',\n  datasetrestrict: '0x0000000000000000000000000000000000000000',\n  apprestrict: '0x0000000000000000000000000000000000000000',\n  trust: 1,\n  category: 0,\n  tag: '0x0000000000000000000000000000000000000000000000000000000000000001',\n  volume: 1,\n  workerpoolprice: 10000000,\n  workerpool: '0xC3ba8b42C0Ca50dA42B2983F38F62348171D8Ea4'\n}"
 }

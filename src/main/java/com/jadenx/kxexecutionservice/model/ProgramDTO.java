@@ -28,4 +28,6 @@ public class ProgramDTO {
     @NotNull
     private Long executionJob;
 
+    private String  blockchainAddress;
+
 }

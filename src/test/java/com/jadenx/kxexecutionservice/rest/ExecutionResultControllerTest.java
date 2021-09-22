@@ -9,6 +9,7 @@ import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.http.client.HttpComponentsClientHttpRequestFactory;
 import org.springframework.test.context.jdbc.Sql;
 
 import java.util.List;
@@ -20,7 +21,8 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 public class ExecutionResultControllerTest extends BaseIT {
 
     @Test
-    @Sql({"/data/gigData.sql", "/data/executionJobData.sql", "/data/executionResultData.sql"})
+    @Sql({"/data/datasetData.sql", "/data/gigData.sql",
+        "/data/executionJobData.sql", "/data/executionResultData.sql"})
     public void getAllExecutionResults_success() {
         final HttpEntity<String> request = new HttpEntity<>(null, headers());
         final ResponseEntity<List<ExecutionResultDTO>> response = restTemplate.exchange(
@@ -28,15 +30,16 @@ public class ExecutionResultControllerTest extends BaseIT {
             });
 
         assertEquals(HttpStatus.OK, response.getStatusCode());
-        assertEquals((long) 1200, response.getBody().get(0).getId());
+        assertEquals( 1000L, response.getBody().get(0).getId());
     }
 
     @Test
-    @Sql({"/data/gigData.sql", "/data/executionJobData.sql", "/data/executionResultData.sql"})
+    @Sql({"/data/datasetData.sql", "/data/gigData.sql",
+        "/data/executionJobData.sql", "/data/executionResultData.sql"})
     public void getExecutionResult_success() {
         final HttpEntity<String> request = new HttpEntity<>(null, headers());
         final ResponseEntity<ExecutionResultDTO> response = restTemplate.exchange(
-            "/api/executionResults/1200", HttpMethod.GET, request, ExecutionResultDTO.class);
+            "/api/executionResults/1000", HttpMethod.GET, request, ExecutionResultDTO.class);
 
         assertEquals(HttpStatus.OK, response.getStatusCode());
         assertEquals("Aenean pulvinar...", response.getBody().getLocation());
@@ -53,7 +56,7 @@ public class ExecutionResultControllerTest extends BaseIT {
     }
 
     @Test
-    @Sql({"/data/gigData.sql", "/data/executionJobData.sql"})
+    @Sql({"/data/datasetData.sql", "/data/gigData.sql", "/data/executionJobData.sql"})
     public void createExecutionResult_success() {
         final HttpEntity<String> request = new HttpEntity<>(
             readResource("/requests/executionResultDTORequest.json"), headers());
@@ -77,24 +80,25 @@ public class ExecutionResultControllerTest extends BaseIT {
     }
 
     @Test
-    @Sql({"/data/gigData.sql", "/data/executionJobData.sql", "/data/executionResultData.sql"})
+    @Sql({"/data/datasetData.sql", "/data/gigData.sql", "/data/executionJobData.sql", "/data/executionResultData.sql"})
     public void updateExecutionResult_success() {
         final HttpEntity<String> request = new HttpEntity<>(
             readResource("/requests/executionResultDTORequest.json"), headers());
         final ResponseEntity<Void> response = restTemplate.exchange(
-            "/api/executionResults/1200", HttpMethod.PUT, request, Void.class);
+            "/api/executionResults/1000", HttpMethod.PUT, request, Void.class);
 
         assertEquals(HttpStatus.OK, response.getStatusCode());
         assertEquals("Ut pellentesque sapien...",
-            executionResultRepository.findById(1200L).get().getLocation());
+            executionResultRepository.findById(1000L).get().getLocation());
     }
 
     @Test
-    @Sql({"/data/gigData.sql", "/data/executionJobData.sql", "/data/executionResultData.sql"})
+    @Sql({"/data/datasetData.sql", "/data/gigData.sql",
+        "/data/executionJobData.sql", "/data/executionResultData.sql"})
     public void deleteExecutionResult_success() {
         final HttpEntity<String> request = new HttpEntity<>(null, headers());
         final ResponseEntity<Void> response = restTemplate.exchange(
-            "/api/executionResults/1200", HttpMethod.DELETE, request, Void.class);
+            "/api/executionResults/1000", HttpMethod.DELETE, request, Void.class);
 
         assertAll("Evaluate state of db after delete",
             () -> assertEquals(HttpStatus.NO_CONTENT, response.getStatusCode()),
@@ -104,4 +108,19 @@ public class ExecutionResultControllerTest extends BaseIT {
         );
     }
 
+    @Test
+    @Sql({"/data/datasetData.sql", "/data/gigData.sql", "/data/executionJobData.sql", "/data/executionResultData.sql"})
+    public void patchUpdateExecutionResult_success() {
+        final HttpEntity<String> request = new HttpEntity<>(
+            readResource("/requests/executionResultPatchDTORequest.json"), headers());
+        restTemplate.getRestTemplate().setRequestFactory(new HttpComponentsClientHttpRequestFactory());
+        final ResponseEntity<Void> response = restTemplate.exchange(
+            "/api/executionResults/1000", HttpMethod.PATCH, request, Void.class);
+
+        assertEquals(HttpStatus.OK, response.getStatusCode());
+        assertEquals("Ut pellentesque sapien...test",
+            executionResultRepository.findById(1000L).get().getLocation());
+        assertEquals("Donec ac nibh...test",
+            executionResultRepository.findById(1000L).get().getStorageType());
+    }
 }

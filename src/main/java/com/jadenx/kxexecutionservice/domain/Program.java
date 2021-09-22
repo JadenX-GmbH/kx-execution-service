@@ -30,6 +30,9 @@ public class Program {
     @JoinColumn(name = "execution_job_id", nullable = false)
     private ExecutionJob executionJob;
 
+    @Column
+    private String  blockchainAddress;
+
     @Column(nullable = false, updatable = false)
     private OffsetDateTime dateCreated;
 

@@ -22,4 +22,5 @@ public interface GigService {
     void update(final Long id, final GigDTO gigDTO);
 
     void delete(final Long id);
+
 }

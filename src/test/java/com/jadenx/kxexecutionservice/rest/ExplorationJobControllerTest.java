@@ -19,7 +19,7 @@ import static org.junit.jupiter.api.Assertions.*;
 public class ExplorationJobControllerTest extends BaseIT {
 
     @Test
-    @Sql({"/data/gigData.sql", "/data/explorationJobData.sql"})
+    @Sql({"/data/datasetData.sql", "/data/gigData.sql", "/data/explorationJobData.sql"})
     public void getAllExplorationJobs_success() {
         final HttpEntity<String> request = new HttpEntity<>(null, headers());
         final ResponseEntity<List<ExplorationJobDTO>> response = restTemplate.exchange(
@@ -28,11 +28,12 @@ public class ExplorationJobControllerTest extends BaseIT {
             });
 
         assertEquals(HttpStatus.OK, response.getStatusCode());
-        assertEquals((long) 1100, response.getBody().get(0).getId());
+        assertEquals( 1100L, response.getBody().get(0).getId());
     }
 
     @Test
-    @Sql({"/data/gigData.sql", "/data/explorationJobData.sql", "/data/explorationResultData.sql"})
+    @Sql({"/data/datasetData.sql", "/data/gigData.sql",
+        "/data/explorationJobData.sql", "/data/explorationResultData.sql"})
     public void getExplorationJob_success() {
         final HttpEntity<String> request = new HttpEntity<>(null, headers());
         final ResponseEntity<ExplorationJobDTO> response = restTemplate.exchange(
@@ -44,7 +45,7 @@ public class ExplorationJobControllerTest extends BaseIT {
                 +  " sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",
                 response.getBody().getDescription()),
             ()-> assertNotNull(response.getBody().getExplorationResultDTO()),
-            ()-> assertEquals(1300, response.getBody().getExplorationResultDTO().getId())
+            ()-> assertEquals(1100, response.getBody().getExplorationResultDTO().getId())
         );
     }
 
@@ -59,7 +60,7 @@ public class ExplorationJobControllerTest extends BaseIT {
     }
 
     @Test
-    @Sql("/data/gigData.sql")
+    @Sql({"/data/datasetData.sql", "/data/gigData.sql"})
     public void createExplorationJob_success() {
         final HttpEntity<String> request = new HttpEntity<>(
             readResource("/requests/explorationJobDTORequest.json"), headers());
@@ -71,7 +72,7 @@ public class ExplorationJobControllerTest extends BaseIT {
     }
 
     @Test
-    @Sql({"/data/gigData.sql", "/data/explorationJobData.sql"})
+    @Sql({"/data/datasetData.sql", "/data/gigData.sql", "/data/explorationJobData.sql"})
     public void updateExplorationJob_success() {
         final HttpEntity<String> request = new HttpEntity<>(
             readResource("/requests/explorationJobDTORequest.json"), headers());
@@ -85,7 +86,8 @@ public class ExplorationJobControllerTest extends BaseIT {
     }
 
     @Test
-    @Sql({"/data/gigData.sql", "/data/explorationJobData.sql", "/data/explorationResultData.sql"})
+    @Sql({"/data/datasetData.sql", "/data/gigData.sql",
+        "/data/explorationJobData.sql", "/data/explorationResultData.sql"})
     public void deleteExplorationJob_success() {
         final HttpEntity<String> request = new HttpEntity<>(null, headers());
         final ResponseEntity<Void> response = restTemplate.exchange(

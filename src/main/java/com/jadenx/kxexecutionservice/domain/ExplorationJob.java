@@ -31,9 +31,14 @@ public class ExplorationJob {
     // CHECKSTYLE IGNORE check FOR NEXT 5 LINES
     @OneToOne(mappedBy = "explorationJob",
         fetch = FetchType.LAZY,
+        cascade = CascadeType.ALL,
         orphanRemoval = true
     )
-    private ExplorationResult explorationJob;
+    private ExplorationResult explorationResult;
+
+    @OneToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "dataset_id")
+    private Dataset dataset;
 
     @Column(nullable = false, updatable = false)
     private OffsetDateTime dateCreated;

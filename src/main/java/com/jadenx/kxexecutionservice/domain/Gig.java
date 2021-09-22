@@ -17,11 +17,7 @@ public class Gig {
 
     @Id
     @Column(nullable = false, updatable = false)
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-
-    @Column
-    private Long gigId;
 
     @Column(nullable = false, columnDefinition = "char(36)")
     @Type(type = "uuid-char")

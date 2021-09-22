@@ -1,6 +1,8 @@
 package com.jadenx.kxexecutionservice.rest;
 
 import com.jadenx.kxexecutionservice.model.ExecutionJobDTO;
+import com.jadenx.kxexecutionservice.model.ExecutionJobPatchDTO;
+import com.jadenx.kxexecutionservice.model.ProgramDTO;
 import com.jadenx.kxexecutionservice.service.ExecutionJobService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -50,4 +52,16 @@ public class ExecutionJobController {
         return ResponseEntity.noContent().build();
     }
 
+    @GetMapping("/{id}/programs")
+    public  ResponseEntity<List<ProgramDTO>> getProgramsByExecutionJob(@PathVariable final Long id) {
+        return ResponseEntity.ok(executionJobService.getProgramsByExecutionJob(id));
+    }
+
+    @PatchMapping("/{id}")
+    public ResponseEntity<Void> patchUpdateExecutionJob(@PathVariable final Long id,
+                                                   @RequestBody @Valid final ExecutionJobPatchDTO
+                                                       executionJobPatchDTO) {
+        executionJobService.patchUpdate(id, executionJobPatchDTO);
+        return ResponseEntity.ok().build();
+    }
 }

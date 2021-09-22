@@ -9,6 +9,7 @@ import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.http.client.HttpComponentsClientHttpRequestFactory;
 import org.springframework.test.context.jdbc.Sql;
 
 import java.util.List;
@@ -19,19 +20,37 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 public class OrderControllerTest extends BaseIT {
 
     @Test
-    @Sql("/data/orderData.sql")
+    @Sql({"/data/datasetData.sql", "/data/gigData.sql", "/data/executionJobData.sql", "/data/orderData.sql"})
     public void getAllOrders_success() {
         final HttpEntity<String> request = new HttpEntity<>(null, headers());
         final ResponseEntity<List<OrderDTO>> response = restTemplate.exchange(
-            "/api/orders", HttpMethod.GET, request, new ParameterizedTypeReference<List<OrderDTO>>() {
+            "/api/orders", HttpMethod.GET, request,
+            new ParameterizedTypeReference<List<OrderDTO>>() {
             });
 
         assertEquals(HttpStatus.OK, response.getStatusCode());
-        assertEquals((long) 1700, response.getBody().get(0).getId());
+        assertEquals(1700, response.getBody().get(0).getId());
+        assertEquals(1000, response.getBody().get(0).getExecutionJob());
     }
 
     @Test
-    @Sql("/data/orderData.sql")
+    @Sql({"/data/datasetData.sql", "/data/gigData.sql", "/data/executionJobData.sql", "/data/orderData.sql"})
+    public void getAllOrdersByExecutionJob_success() {
+        final HttpEntity<String> request = new HttpEntity<>(null, headers());
+        final ResponseEntity<List<OrderDTO>> response = restTemplate.exchange(
+            "/api/orders?execution_job=1000", HttpMethod.GET, request,
+            new ParameterizedTypeReference<List<OrderDTO>>() {
+            });
+
+        assertEquals(HttpStatus.OK, response.getStatusCode());
+        assertEquals(1700L, response.getBody().get(0).getId());
+        assertEquals(1000L, response.getBody().get(0).getExecutionJob());
+
+
+    }
+
+    @Test
+    @Sql({"/data/datasetData.sql", "/data/gigData.sql", "/data/executionJobData.sql", "/data/orderData.sql"})
     public void getOrder_success() {
         final HttpEntity<String> request = new HttpEntity<>(null, headers());
         final ResponseEntity<OrderDTO> response = restTemplate.exchange(
@@ -52,6 +71,7 @@ public class OrderControllerTest extends BaseIT {
     }
 
     @Test
+    @Sql({"/data/datasetData.sql", "/data/gigData.sql", "/data/executionJobData.sql"})
     public void createOrder_success() {
         final HttpEntity<String> request = new HttpEntity<>(
             readResource("/requests/orderDTORequest.json"), headers());
@@ -63,6 +83,7 @@ public class OrderControllerTest extends BaseIT {
     }
 
     @Test
+    @Sql({"/data/datasetData.sql", "/data/gigData.sql", "/data/executionJobData.sql"})
     public void createOrder_missingField() {
         final HttpEntity<String> request = new HttpEntity<>(
             readResource("/requests/orderDTORequest_missingField.json"), headers());
@@ -75,7 +96,7 @@ public class OrderControllerTest extends BaseIT {
     }
 
     @Test
-    @Sql("/data/orderData.sql")
+    @Sql({"/data/datasetData.sql", "/data/gigData.sql", "/data/executionJobData.sql", "/data/orderData.sql"})
     public void updateOrder_success() {
         final HttpEntity<String> request = new HttpEntity<>(
             readResource("/requests/orderDTORequest.json"), headers());
@@ -87,7 +108,7 @@ public class OrderControllerTest extends BaseIT {
     }
 
     @Test
-    @Sql("/data/orderData.sql")
+    @Sql({"/data/datasetData.sql", "/data/gigData.sql", "/data/executionJobData.sql", "/data/orderData.sql"})
     public void deleteOrder_success() {
         final HttpEntity<String> request = new HttpEntity<>(null, headers());
         final ResponseEntity<Void> response = restTemplate.exchange(
@@ -97,4 +118,16 @@ public class OrderControllerTest extends BaseIT {
         assertEquals(0, orderRepository.count());
     }
 
+    @Test
+    @Sql({"/data/datasetData.sql", "/data/gigData.sql", "/data/executionJobData.sql", "/data/orderData.sql"})
+    public void patchUpdateOrder_success() {
+        final HttpEntity<String> request = new HttpEntity<>(
+            readResource("/requests/orderPatchDTORequest.json"), headers());
+        restTemplate.getRestTemplate().setRequestFactory(new HttpComponentsClientHttpRequestFactory());
+        final ResponseEntity<Void> response = restTemplate.exchange(
+            "/api/orders/1700", HttpMethod.PATCH, request, Void.class);
+
+        assertEquals(HttpStatus.OK, response.getStatusCode());
+        assertEquals("order_name", orderRepository.findById(1700L).get().getName());
+    }
 }

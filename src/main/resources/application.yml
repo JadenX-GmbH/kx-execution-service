@@ -30,7 +30,6 @@ logging:
   level:
     root: INFO
 
-
 ---
 # DEV
 spring:
@@ -38,10 +37,12 @@ spring:
     activate:
       on-profile: dev
   datasource:
-    url: ${JDBC_DATABASE_URL:jdbc:h2:mem:kx-execution-service;DB_CLOSE_DELAY=-1;DB_CLOSE_ON_EXIT=FALSE;MODE=MYSQL}
-    username: ${JDBC_DATABASE_USERNAME:sa}
-    password: ${JDBC_DATABASE_PASSWORD:}
-
+    url: ${JDBC_DATABASE_URL:jdbc:mysql://localhost:3306/kx-execution-dev?useSSL=false&allowPublicKeyRetrieval=true}
+    username: ${JDBC_DATABASE_USERNAME:root}
+    password: ${JDBC_DATABASE_PASSWORD:HaB4Wc-C8t3X-Bmk99}
+    driver-class-name: com.mysql.jdbc.Driver
+feign:
+  url: <kx-blockchain-middleware url>
 stage: dev
 
 ---
@@ -54,6 +55,8 @@ spring:
     url: ${JDBC_DATABASE_URL:}
     username: ${JDBC_DATABASE_USERNAME:}
     password: ${JDBC_DATABASE_PASSWORD:}
+feign:
+  url: <kx-blockchain-middleware url>
 stage: local
 
 ---
@@ -66,4 +69,16 @@ spring:
     url: ${JDBC_DATABASE_URL:}
     username: ${JDBC_DATABASE_USERNAME:}
     password: ${JDBC_DATABASE_PASSWORD:}
+feign:
+  url: <kx-blockchain-middleware url>
 stage: testing
+
+---
+# test - deployed on AWS
+spring:
+  config:
+    activate:
+      on-profile: it
+feign:
+  url: <kx-blockchain-middleware url>
+stage: it

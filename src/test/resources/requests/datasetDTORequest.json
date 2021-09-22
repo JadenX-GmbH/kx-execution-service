@@ -1,8 +1,10 @@
 {
     "title": "Aenean pulvinar...",
+    "dataOwner" : "69ea1761-240a-382f-b70b-79fd565a3c83",
     "description": "Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam.",
     "hash": "Cras sed interdum...",
     "type": "RAW",
     "location": "Ut pellentesque sapien...",
-    "storageType": "Donec ac nibh..."
+    "storageType": "Donec ac nibh...",
+    "blockchainAddress": "0xdBDF1FE51fd3AF9aD94fb63824EbD977518d64b3"
 }

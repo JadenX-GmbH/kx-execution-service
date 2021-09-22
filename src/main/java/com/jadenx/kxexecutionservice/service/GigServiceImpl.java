@@ -1,9 +1,6 @@
 package com.jadenx.kxexecutionservice.service;
 
-import com.jadenx.kxexecutionservice.domain.Dataset;
-import com.jadenx.kxexecutionservice.domain.ExecutionJob;
-import com.jadenx.kxexecutionservice.domain.ExplorationJob;
-import com.jadenx.kxexecutionservice.domain.Gig;
+import com.jadenx.kxexecutionservice.domain.*;
 import com.jadenx.kxexecutionservice.model.ExecutionJobDTO;
 import com.jadenx.kxexecutionservice.model.ExplorationJobDTO;
 import com.jadenx.kxexecutionservice.model.GigDTO;
@@ -105,7 +102,6 @@ public class GigServiceImpl implements GigService {
 
     private GigDTO mapToDTO(final Gig gig, final GigDTO gigDTO) {
         gigDTO.setId(gig.getId());
-        gigDTO.setGigId(gig.getGigId());
         gigDTO.setDataOwner(gig.getDataOwner());
         gigDTO.setSpecialist(gig.getSpecialist());
         gigDTO.setGigDatasets(gig.getGigDatasetDatasets() == null ? null : gig.getGigDatasetDatasets().stream()
@@ -115,7 +111,7 @@ public class GigServiceImpl implements GigService {
     }
 
     private Gig mapToEntity(final GigDTO gigDTO, final Gig gig) {
-        gig.setGigId(gigDTO.getGigId());
+        gig.setId(gigDTO.getId());
         gig.setDataOwner(gigDTO.getDataOwner());
         gig.setSpecialist(gigDTO.getSpecialist());
         if (gigDTO.getGigDatasets() != null) {
@@ -137,7 +133,6 @@ public class GigServiceImpl implements GigService {
         executionJobDTO.setWorkerpool(executionJob.getWorkerpool());
         executionJobDTO.setWorker(executionJob.getWorker());
         executionJobDTO.setGig(executionJob.getGig() == null ? null : executionJob.getGig().getId());
-        executionJobDTO.setOrder(executionJob.getOrder() == null ? null : executionJob.getOrder().getId());
         return executionJobDTO;
     }
 
@@ -145,7 +140,7 @@ public class GigServiceImpl implements GigService {
     private Predicate<Gig> filterByDataOwnerOrSpecialistPredicate(final String uid) {
         return gig -> gig.getDataOwner()
             .equals(UUID.fromString(uid))
-            || gig.getSpecialist()
-            .equals(UUID.fromString(uid));
+            || (gig.getSpecialist() != null && gig.getSpecialist()
+            .equals(UUID.fromString(uid)));
     }
 }

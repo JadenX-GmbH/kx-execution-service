@@ -1,0 +1,16 @@
+INSERT INTO execution_result (id,
+                              location,
+                              storage_type,
+                              transaction_id,
+                              blockchain_identifier,
+                              execution_job_id,
+                              date_created,
+                              last_updated)
+VALUES (10000,
+        'https://ipfs.iex.ec/ipfs/QmUDYEnidjAutk4s44fB1uAQanQ3r1g8iNqZfjCd5p1vZj',
+        'ipfs',
+        '0xc0a32ce8e071c948640775969724838280d56ae53bb0140f5a67080ba5535027',
+        'https://explorer.iex.ec/bellecour/task/',
+        10000,
+        '2021-09-03 04:30:00',
+        '2021-09-03 04:30:00');

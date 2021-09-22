@@ -1,6 +1,7 @@
 package com.jadenx.kxexecutionservice.rest;
 
 import com.jadenx.kxexecutionservice.model.ProgramDTO;
+import com.jadenx.kxexecutionservice.model.ProgramPatchDTO;
 import com.jadenx.kxexecutionservice.service.ProgramService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -49,4 +50,10 @@ public class ProgramController {
         return ResponseEntity.noContent().build();
     }
 
+    @PatchMapping("/{id}")
+    public ResponseEntity<Void> patchUpdate(@PathVariable final Long id,
+                                            @RequestBody @Valid final ProgramPatchDTO programPatchDTO) {
+        programService.patchUpdate(id, programPatchDTO);
+        return ResponseEntity.ok().build();
+    }
 }

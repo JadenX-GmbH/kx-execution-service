@@ -2,12 +2,17 @@ package com.jadenx.kxexecutionservice.service;
 
 import com.jadenx.kxexecutionservice.domain.Dataset;
 import com.jadenx.kxexecutionservice.model.DatasetDTO;
+import com.jadenx.kxexecutionservice.model.PaginatedResponse;
 import com.jadenx.kxexecutionservice.repos.DatasetRepository;
+import com.jadenx.kxexecutionservice.util.PaginatedResponseUtil;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
 
 import java.util.List;
+import java.util.UUID;
 import java.util.stream.Collectors;
 
 
@@ -26,6 +31,28 @@ public class DatasetServiceImpl implements DatasetService {
             .stream()
             .map(dataset -> mapToDTO(dataset, new DatasetDTO()))
             .collect(Collectors.toList());
+    }
+
+    @Override
+    public PaginatedResponse<?> findAllByUser(final UUID uid, final Pageable pageable) {
+        Page<Dataset> datasetPage =
+            datasetRepository.findDistinctByGigDatasetGigs_DataOwner_OrGigDatasetGigs_Specialist(uid, uid, pageable);
+        final List<DatasetDTO> response = datasetPage.stream()
+            .map(dataset -> mapToDTO(dataset, new DatasetDTO()))
+            .collect(Collectors.toList());
+        return PaginatedResponseUtil.paginatedResponse(response, datasetPage);
+    }
+
+    @Override
+    public PaginatedResponse<?> findAllByGig(final Long id, final UUID uid, final Pageable pageable) {
+        Page<Dataset> datasetPage =
+            datasetRepository
+            .findAllByGigDatasetGigs_id_OrGigDatasetGigs_Specialist_AndGigDatasetGigs_DataOwner(id,
+                uid, uid, pageable);
+        List<DatasetDTO> response = datasetPage.stream()
+            .map(dataset -> mapToDTO(dataset, new DatasetDTO()))
+            .collect(Collectors.toList());
+        return PaginatedResponseUtil.paginatedResponse(response, datasetPage);
     }
 
     @Override
@@ -55,6 +82,15 @@ public class DatasetServiceImpl implements DatasetService {
         datasetRepository.deleteById(id);
     }
 
+    @Override
+    public PaginatedResponse<?> findAllByDataOwner(final UUID uid, final Pageable pageable) {
+        Page<Dataset> datasetPage = datasetRepository.findAllByDataOwner(uid, pageable);
+        List<DatasetDTO> response = datasetPage.stream()
+            .map(dataset -> mapToDTO(dataset, new DatasetDTO()))
+            .collect(Collectors.toList());
+        return PaginatedResponseUtil.paginatedResponse(response, datasetPage);
+    }
+
     private DatasetDTO mapToDTO(final Dataset dataset, final DatasetDTO datasetDTO) {
         datasetDTO.setId(dataset.getId());
         datasetDTO.setTitle(dataset.getTitle());
@@ -63,6 +99,8 @@ public class DatasetServiceImpl implements DatasetService {
         datasetDTO.setType(dataset.getType());
         datasetDTO.setLocation(dataset.getLocation());
         datasetDTO.setStorageType(dataset.getStorageType());
+        datasetDTO.setDataOwner(dataset.getDataOwner());
+        datasetDTO.setBlockchainAddress(dataset.getBlockchainAddress());
         return datasetDTO;
     }
 
@@ -73,6 +111,8 @@ public class DatasetServiceImpl implements DatasetService {
         dataset.setType(datasetDTO.getType());
         dataset.setLocation(datasetDTO.getLocation());
         dataset.setStorageType(datasetDTO.getStorageType());
+        dataset.setDataOwner(datasetDTO.getDataOwner());
+        dataset.setBlockchainAddress(datasetDTO.getBlockchainAddress());
         return dataset;
     }
 

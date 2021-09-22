@@ -9,6 +9,7 @@ import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.http.client.HttpComponentsClientHttpRequestFactory;
 import org.springframework.test.context.jdbc.Sql;
 
 import java.util.List;
@@ -19,7 +20,8 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 public class ProgramControllerTest extends BaseIT {
 
     @Test
-    @Sql({"/data/gigData.sql", "/data/executionJobData.sql", "/data/programData.sql"})
+    @Sql({"/data/datasetData.sql", "/data/gigData.sql",
+        "/data/executionJobData.sql", "/data/programData.sql"})
     public void getAllPrograms_success() {
         final HttpEntity<String> request = new HttpEntity<>(null, headers());
         final ResponseEntity<List<ProgramDTO>> response = restTemplate.exchange(
@@ -31,7 +33,8 @@ public class ProgramControllerTest extends BaseIT {
     }
 
     @Test
-    @Sql({"/data/gigData.sql", "/data/executionJobData.sql", "/data/programData.sql"})
+    @Sql({"/data/datasetData.sql", "/data/gigData.sql",
+        "/data/executionJobData.sql", "/data/programData.sql"})
     public void getProgram_success() {
         final HttpEntity<String> request = new HttpEntity<>(null, headers());
         final ResponseEntity<ProgramDTO> response = restTemplate.exchange(
@@ -52,7 +55,7 @@ public class ProgramControllerTest extends BaseIT {
     }
 
     @Test
-    @Sql({"/data/gigData.sql", "/data/executionJobData.sql"})
+    @Sql({"/data/datasetData.sql", "/data/gigData.sql", "/data/executionJobData.sql"})
     public void createProgram_success() {
         final HttpEntity<String> request = new HttpEntity<>(
             readResource("/requests/programDTORequest.json"), headers());
@@ -76,7 +79,7 @@ public class ProgramControllerTest extends BaseIT {
     }
 
     @Test
-    @Sql({"/data/gigData.sql", "/data/executionJobData.sql", "/data/programData.sql"})
+    @Sql({"/data/datasetData.sql", "/data/gigData.sql", "/data/executionJobData.sql", "/data/programData.sql"})
     public void updateProgram_success() {
         final HttpEntity<String> request = new HttpEntity<>(readResource(
             "/requests/programDTORequest.json"), headers());
@@ -88,7 +91,7 @@ public class ProgramControllerTest extends BaseIT {
     }
 
     @Test
-    @Sql({"/data/gigData.sql", "/data/executionJobData.sql", "/data/programData.sql"})
+    @Sql({"/data/datasetData.sql", "/data/gigData.sql", "/data/executionJobData.sql", "/data/programData.sql"})
     public void deleteProgram_success() {
         final HttpEntity<String> request = new HttpEntity<>(null, headers());
         final ResponseEntity<Void> response = restTemplate.exchange(
@@ -99,4 +102,18 @@ public class ProgramControllerTest extends BaseIT {
         assertEquals(1,executionJobRepository.count());
     }
 
+    @Test
+    @Sql({"/data/datasetData.sql", "/data/gigData.sql", "/data/executionJobData.sql", "/data/programData.sql"})
+    public void patchUpdateProgram_success() {
+        final HttpEntity<String> request = new HttpEntity<>(readResource(
+            "/requests/programPatchDTORequest.json"), headers());
+
+        restTemplate.getRestTemplate().setRequestFactory(new HttpComponentsClientHttpRequestFactory());
+
+        final ResponseEntity<Void> response = restTemplate.exchange(
+            "/api/programs/1600", HttpMethod.PATCH, request, Void.class);
+
+        assertEquals(HttpStatus.OK, response.getStatusCode());
+        assertEquals("test", programRepository.findById(1600L).get().getHash());
+    }
 }

@@ -19,7 +19,7 @@ public class ExecutionJob {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(nullable = false)
+    @Column
     private Double priceToken;
 
     // CHECKSTYLE IGNORE check FOR NEXT 5 LINES
@@ -34,11 +34,29 @@ public class ExecutionJob {
     @Enumerated(EnumType.STRING)
     private ExecutionType executionType;
 
-    @Column(nullable = false)
+    @Column
     private String workerpool;
 
-    @Column(nullable = false)
+    @Column
     private String worker;
+
+    @Column
+    private String dealId;
+
+    @Column(columnDefinition = "varchar(100) default 'https://explorer.iex.ec/bellecour/deal/'")
+    private String dealBlockchainIdentifier;
+
+    @Column
+    private String taskId;
+
+    @Column(columnDefinition = "varchar(100) default 'https://explorer.iex.ec/bellecour/task/'")
+    private String taskBlockchainIdentifier;
+
+    @Column
+    private int category;
+
+    @Column
+    private int trust;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "gig_id", nullable = false)
@@ -51,13 +69,19 @@ public class ExecutionJob {
     @OneToOne(
         mappedBy = "executionJob",
         fetch = FetchType.LAZY,
-        orphanRemoval = true
-    )
+        cascade = CascadeType.ALL,
+        orphanRemoval = true)
     private ExecutionResult executionResult;
 
-    @OneToOne
-    @JoinColumn(name = "order_id")
-    private Order order;
+    @OneToMany(mappedBy = "executionJob", cascade = CascadeType.ALL)
+    private Set<Order> orders;
+
+    @OneToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "dataset_id")
+    private Dataset dataset;
+
+    @OneToMany(mappedBy = "executionJob", cascade = CascadeType.ALL, orphanRemoval = true)
+    private Set<ExecutionInputParameter> inputParameters;
 
     @Column(nullable = false, updatable = false)
     private OffsetDateTime dateCreated;

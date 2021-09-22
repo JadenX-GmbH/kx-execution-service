@@ -19,13 +19,20 @@ public class Order {
     private Long id;
 
     @Column(nullable = false)
+    private String name;
+
+    @Column(nullable = false)
     private String transactionId;
 
     @Column(nullable = false)
     private String blockchainIdentifier;
 
-    @OneToOne(mappedBy = "order", fetch = FetchType.LAZY)
-    private ExecutionJob order;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "execution_job_id", nullable = false)
+    private ExecutionJob executionJob;
+
+    @Column(columnDefinition = "longtext")
+    private String orderDetails;
 
     @Column(nullable = false, updatable = false)
     private OffsetDateTime dateCreated;

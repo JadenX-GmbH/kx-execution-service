@@ -4,5 +4,17 @@
     "executionType": "TEE",
     "workerpool": "Cras sed interdum...",
     "worker": "Cras sed interdum...",
-    "gig": 1400
+    "deal_id":"0xa7f5e5c89f5c183de2cd0ccc676ea949442a73d3204e73acdb233de7d7dfa1bf" ,
+    "deal_blockchain_identifier": "https://explorer.iex.ec/bellecour/deal/",
+    "task_id": "0xc53317b2184ff021823604129888aae7dbb82f35b702ee338b9d44812da1d888",
+    "task_blockchain_identifier": "https://explorer.iex.ec/bellecour/task/",
+    "gig": 1400,
+    "programDTOList": [
+        {
+            "hash": "sha256:8a682cce5175358b3cd53f3a8a084365bc9ed0c3474cc3d047008db65541c0f0",
+            "location": "iexechub/iexec-face-swap:1.0.0 ",
+            "storageType": "DockerHub",
+            "blockchainAddress": null
+        }
+    ]
 }

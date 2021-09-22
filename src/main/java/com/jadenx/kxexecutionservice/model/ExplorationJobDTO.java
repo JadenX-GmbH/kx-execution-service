@@ -23,4 +23,6 @@ public class ExplorationJobDTO {
 
     private ExplorationResultDTO explorationResultDTO;
 
+    private Long dataset;
+
 }

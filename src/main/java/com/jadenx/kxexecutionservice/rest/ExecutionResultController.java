@@ -1,6 +1,7 @@
 package com.jadenx.kxexecutionservice.rest;
 
 import com.jadenx.kxexecutionservice.model.ExecutionResultDTO;
+import com.jadenx.kxexecutionservice.model.ExecutionResultPatchDTO;
 import com.jadenx.kxexecutionservice.service.ExecutionResultService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -50,4 +51,11 @@ public class ExecutionResultController {
         return ResponseEntity.noContent().build();
     }
 
+    @PatchMapping("/{id}")
+    public ResponseEntity<Void> patchUpdateExecutionResult(@PathVariable final Long id,
+                                                           @RequestBody @Valid final ExecutionResultPatchDTO
+                                                               executionResultPatchDTO) {
+        executionResultService.patchUpdate(id, executionResultPatchDTO);
+        return ResponseEntity.ok().build();
+    }
 }

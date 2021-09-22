@@ -1,6 +1,7 @@
 package com.jadenx.kxexecutionservice.rest;
 
 import com.jadenx.kxexecutionservice.model.OrderDTO;
+import com.jadenx.kxexecutionservice.model.OrderPatchDTO;
 import com.jadenx.kxexecutionservice.service.OrderService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -22,8 +23,13 @@ public class OrderController {
     }
 
     @GetMapping
-    public ResponseEntity<List<OrderDTO>> getAllOrders() {
-        return ResponseEntity.ok(orderService.findAll());
+    public ResponseEntity<List<OrderDTO>> getAllOrders(
+        @RequestParam(defaultValue = "", name = "execution_job", required = false) final String id) {
+        if (id.isBlank()) {
+            return ResponseEntity.ok(orderService.findAll());
+        }
+        return ResponseEntity.ok(orderService.findAllByExecutionJob(Long.parseLong((id))));
+
     }
 
     @GetMapping("/{id}")
@@ -49,4 +55,10 @@ public class OrderController {
         return ResponseEntity.noContent().build();
     }
 
+    @PatchMapping("/{id}")
+    public ResponseEntity<Void> patchUpdateOrder(@PathVariable final Long id,
+                                                 @RequestBody @Valid final OrderPatchDTO orderPatchDTO) {
+        orderService.patchUpdate(id, orderPatchDTO);
+        return ResponseEntity.ok().build();
+    }
 }

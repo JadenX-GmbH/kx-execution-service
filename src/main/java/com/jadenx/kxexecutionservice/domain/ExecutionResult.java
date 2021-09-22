@@ -13,8 +13,6 @@ import java.time.OffsetDateTime;
 public class ExecutionResult {
 
     @Id
-    @Column(nullable = false, updatable = false)
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     @Column(nullable = false)
@@ -27,10 +25,12 @@ public class ExecutionResult {
     private String transactionId;
 
     @Column(nullable = false)
-    private String blockchianIdentifier;
+    private String blockchainIdentifier;
 
-    @OneToOne
+    @OneToOne(fetch = FetchType.LAZY,
+        optional = false)
     @JoinColumn(name = "execution_job_id", nullable = false)
+    @MapsId
     private ExecutionJob executionJob;
 
     @Column(nullable = false, updatable = false)

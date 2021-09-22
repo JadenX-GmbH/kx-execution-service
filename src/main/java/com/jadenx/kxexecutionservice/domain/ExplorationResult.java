@@ -13,8 +13,6 @@ import java.time.OffsetDateTime;
 public class ExplorationResult {
 
     @Id
-    @Column(nullable = false, updatable = false)
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     @Column(nullable = false)
@@ -23,8 +21,10 @@ public class ExplorationResult {
     @Column(nullable = false)
     private String storateType;
 
-    @OneToOne
+    @OneToOne(fetch = FetchType.LAZY,
+        optional = false)
     @JoinColumn(name = "exploration_job_id", nullable = false)
+    @MapsId
     private ExplorationJob explorationJob;
 
     @Column(nullable = false, updatable = false)

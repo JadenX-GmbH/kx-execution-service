@@ -1,14 +1,18 @@
 package com.jadenx.kxexecutionservice.rest;
 
 import com.jadenx.kxexecutionservice.model.DatasetDTO;
+import com.jadenx.kxexecutionservice.model.PaginatedResponse;
 import com.jadenx.kxexecutionservice.service.DatasetService;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
+import java.security.Principal;
 import java.util.List;
+import java.util.UUID;
 
 
 @RestController
@@ -49,4 +53,8 @@ public class DatasetController {
         return ResponseEntity.noContent().build();
     }
 
+    @GetMapping("/dataOwner")
+    public ResponseEntity<PaginatedResponse<?>> getDatasetByDataOwner(final Principal user, final Pageable pageable) {
+        return ResponseEntity.ok(datasetService.findAllByDataOwner(UUID.fromString(user.getName()), pageable));
+    }
 }

@@ -27,7 +27,7 @@ public class ExecutionResultDTO {
 
     @NotNull
     @Size(max = 255)
-    private String blockchianIdentifier;
+    private String blockchainIdentifier;
 
     @NotNull
     private Long executionJob;

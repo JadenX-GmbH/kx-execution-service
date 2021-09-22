@@ -11,17 +11,20 @@ DELETE
 FROM program;
 
 DELETE
-FROM execution_job;
+FROM `order`;
 
 DELETE
 FROM gig_dataset;
 
 DELETE
-FROM gig;
-
-DELETE
 FROM dataset;
 
 DELETE
-FROM `order`;
+FROM execution_input_parameter;
+
+DELETE
+FROM execution_job;
+
+DELETE
+FROM gig;
 
