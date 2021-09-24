@@ -1,4 +1,4 @@
-
+[![codecov](https://codecov.io/gh/JadenX-GmbH/kx-execution-service-public/branch/main/graph/badge.svg?token=1YE22ZRJ20)](https://codecov.io/gh/JadenX-GmbH/kx-execution-service-public)
 ## Swagger
 
 Swagger avaliable at this link:
